@@ -6,6 +6,10 @@ export const register = async (data) => {
     return axios.post(`${API_URL}/complete`, data);
 };
 
+export const login = async (data) => {
+    return axios.post(`${API_URL}/login`, data);
+};
+
 export const forgotPassword = async (data) => {
     return axios.post(`${API_URL}/forgot-password`, data);
 };
