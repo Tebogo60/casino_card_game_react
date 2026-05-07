@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api/auth";
+import { toast } from "sonner";
 
 function Login() {
     const [form, setForm] = useState({
@@ -28,12 +29,17 @@ function Login() {
 
             console.log("Login: ", res.data);
 
-            alert("Logged in successfully.");
+            toast.success("Logged in successfully.");
 
-            navigate("/home");
+            navigate("/home", {
+                state: res.data,
+            });
         } catch (err) {
             console.log("err: ", err);
-            alert("Login failed. Try again.");
+            toast.error(
+                err.response?.data?.message ||
+                    "Login failed. Please try again.",
+            );
         }
     };
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { register } from "../api/auth";
+import { toast } from "sonner";
 
 function Register() {
     const [form, setForm] = useState({
@@ -23,7 +24,7 @@ function Register() {
         e.preventDefault();
 
         if (form.password !== form.confirmPassword) {
-            alert("Passwords do not match");
+            toast.error("Passwords do not match");
             return;
         }
 
@@ -36,12 +37,17 @@ function Register() {
 
             console.log("Registered:", res.data);
 
-            alert("Account created successfully!");
+            toast.success("Account created successfully.");
 
-            navigate("/login");
+            navigate("/login", {
+                state: res.data,
+            });
         } catch (err) {
             console.error(err);
-            alert("Registration failed. Try again.");
+            toast.error(
+                err.response?.data?.message ||
+                    "Registration failed. Try again.",
+            );
         }
     };
 
