@@ -27,10 +27,7 @@ function Login() {
                 password: form.password,
             });
 
-            console.log("Login: ", res.data);
-
             toast.success("Logged in successfully.");
-
             navigate("/home", {
                 state: res.data,
             });
