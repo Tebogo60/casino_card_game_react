@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { forgotPassword } from "../api/auth";
+import { toast } from "sonner";
 
 function ForgotPassword() {
     const [form, setForm] = useState({
@@ -21,12 +22,10 @@ function ForgotPassword() {
                 email: form.email,
             });
 
-            console.log("Forgot Password:", res.data);
-
-            alert("Email successfully sent to: ", res.data.email);
+            toast.success("Email successfully sent to: ", res.data.email);
         } catch (err) {
             console.error(err);
-            alert("Failed to send email.");
+            toast.error(err.response?.data?.message || "Failed to send email.");
         }
     };
 

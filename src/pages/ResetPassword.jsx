@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { resetPassword } from "../api/auth";
+import { toast } from "sonner";
 
 function ResetPassword() {
     const [form, setForm] = useState({
-        token: "",
         password: "",
         confirmPassword: "",
     });
@@ -12,34 +12,51 @@ function ResetPassword() {
     const handleChange = (e) => {
         setForm({
             ...form,
-            [e.targe.name]: e.target.value,
+            [e.target.name]: e.target.value,
         });
     };
 
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+
+    const isValidUUID = (token) => {
+        const uuidPattern =
+            /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+        return uuidPattern.test(token);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const token = searchParams.get("token");
+
+        console.log("Token:", token);
+
+        if (!token || !isValidUUID(token)) {
+            toast.error("Invalid or missing token.");
+            return;
+        }
+
         if (form.password !== form.confirmPassword) {
-            alert("Passwords do not match");
+            toast.error("Passwords do not match");
             return;
         }
 
         try {
             const res = await resetPassword({
-                token: form.token,
+                token: token,
                 password: form.password,
             });
 
-            console.log("Password Resetted: ", res.data);
+            toast.success("Password Reset successfully!");
 
-            alert("Password Resetted successfully!");
-
-            navigate("/login");
+            navigate("/login", {
+                state: res.data,
+            });
         } catch (err) {
             console.error(err);
-            alert("Password Reset failed. Try again.");
+            toast.error(err.response?.data?.message);
         }
     };
 
@@ -49,14 +66,14 @@ function ResetPassword() {
 
             <form onSubmit={handleSubmit}>
                 <input
-                    type="text"
+                    type="password"
                     name="password"
                     placeholder="Password"
                     onChange={handleChange}
                 />
                 <input
-                    type="text"
-                    name="password"
+                    type="password"
+                    name="confirmPassword"
                     placeholder="Repeat Password"
                     onChange={handleChange}
                 />

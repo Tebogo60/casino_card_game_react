@@ -34,9 +34,6 @@ function Register() {
                 email: form.email,
                 password: form.password,
             });
-
-            console.log("Registered:", res.data);
-
             toast.success("Account created successfully.");
 
             navigate("/login", {

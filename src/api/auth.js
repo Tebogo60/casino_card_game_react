@@ -11,7 +11,6 @@ export const saveSession = (data) => {
             role: data.role,
         }),
     );
-    console.log("session saved:", localStorage.getItem("user")); // verify it's there
 };
 
 export const clearSession = () => {
@@ -45,7 +44,7 @@ export const forgotPassword = async (data) => {
 };
 
 export const resetPassword = async (data) => {
-    return axios.post(`${API_URL}/reset-password`, data);
+    return axios.put(`${API_URL}/reset-password`, data);
 };
 
 export const logout = () => {
