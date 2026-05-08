@@ -32,7 +32,6 @@ function Login() {
                 state: res.data,
             });
         } catch (err) {
-            console.log("err: ", err);
             toast.error(
                 err.response?.data?.message ||
                     "Login failed. Please try again.",

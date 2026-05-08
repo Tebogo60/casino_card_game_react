@@ -55,7 +55,6 @@ function ResetPassword() {
                 state: res.data,
             });
         } catch (err) {
-            console.error(err);
             toast.error(err.response?.data?.message);
         }
     };

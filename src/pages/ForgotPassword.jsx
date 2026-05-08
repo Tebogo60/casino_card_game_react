@@ -24,7 +24,6 @@ function ForgotPassword() {
 
             toast.success("Email successfully sent to: ", res.data.email);
         } catch (err) {
-            console.error(err);
             toast.error(err.response?.data?.message || "Failed to send email.");
         }
     };
